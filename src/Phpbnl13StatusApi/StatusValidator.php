@@ -11,6 +11,11 @@ class StatusValidator
             return false;
         }
 
+        $id = $status->getId();
+        if (!$id) {
+            return false;
+        }
+
         $type = $status->getType();
         switch ($type) {
             case StatusInterface::TYPE_STATUS:
