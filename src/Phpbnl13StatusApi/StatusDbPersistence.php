@@ -162,7 +162,8 @@ class StatusDbPersistence implements ListenerAggregateInterface
     {
         $select = $this->table->getSql()->select();
         $select->order('timestamp DESC');
-        $items = new DbTablePaginator($select, $this->table->getAdapter());
-        return $items;
+        $adapter   = new DbTablePaginator($select, $this->table->getAdapter());
+        $paginator = new Paginator($adapter);
+        return $paginator;
     }
 }
