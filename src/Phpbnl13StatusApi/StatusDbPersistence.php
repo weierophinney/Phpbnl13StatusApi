@@ -13,7 +13,9 @@ use Zend\Paginator\Adapter\DbSelect as DbTablePaginator;
 use Zend\Paginator\Paginator;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
-class StatusDbPersistence implements ListenerAggregateInterface
+class StatusDbPersistence implements 
+    ListenerAggregateInterface,
+    StatusPersistenceInterface
 {
     /**
      * @var ClassMethodsHydrator
@@ -68,6 +70,15 @@ class StatusDbPersistence implements ListenerAggregateInterface
                 unset($this->listeners[$index]);
             }
         }
+    }
+
+    public function setUser($user)
+    {
+        if (empty($user)) {
+            $this->user = null;
+            return;
+        }
+        $this->user = (string) $user;
     }
 
     public function onCreate($e)

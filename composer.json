@@ -6,6 +6,7 @@
         "zend/zend-db": "2.1.*",
         "zend/zend-eventmanager": "2.1.*",
         "zend/zend-paginator": "2.1.*",
+        "zend/zend-servicemanager": "2.1.*",
         "zend/zend-stdlib": "2.1.*"
     }
 }
