@@ -26,18 +26,27 @@ class StatusDbPersistence implements ListenerAggregateInterface
     protected $listeners = array();
 
     /**
-     * @var StatusValidator
-     */
-    protected $validator;
-
-    /**
      * @var TableGateway
      */
     protected $table;
 
-    public function __construct(TableGateway $table)
+    /**
+     * User for whom to manipulate status; none removes ability to 
+     * create/update/patch/delete, but will retrieve any status by id, or a 
+     * list of all statuses from all users.
+     * @var string
+     */
+    protected $user;
+
+    /**
+     * @var StatusValidator
+     */
+    protected $validator;
+
+    public function __construct(TableGateway $table, $user = null)
     {
         $this->table = $table;
+        $this->user  = $user;
         $this->validator = new StatusValidator();
         $this->hydrator  = new ClassMethodsHydrator();
     }
@@ -63,6 +72,9 @@ class StatusDbPersistence implements ListenerAggregateInterface
 
     public function onCreate($e)
     {
+        if (!$this->user) {
+            throw new CreationException('User must be specified in order to create a status');
+        }
         if (false === $data = $e->getParam($data, false)) {
             throw new CreationException('Missing data');
         }
@@ -83,6 +95,9 @@ class StatusDbPersistence implements ListenerAggregateInterface
 
     public function onUpdate($e)
     {
+        if (!$this->user) {
+            throw new UpdateException('User must be specified in order to update a status');
+        }
         if (false === $id = $e->getParam($id, false)) {
             throw new UpdateException('Missing id');
         }
@@ -122,6 +137,9 @@ class StatusDbPersistence implements ListenerAggregateInterface
 
     public function onPatch($e)
     {
+        if (!$this->user) {
+            throw new PatchException('User must be specified in order to patch a status');
+        }
         try {
             $data = $this->onUpdate($e);
         } catch (UpdateException $exception) {
@@ -133,6 +151,9 @@ class StatusDbPersistence implements ListenerAggregateInterface
 
     public function onDelete($e)
     {
+        if (!$this->user) {
+            return false;
+        }
         if (false === $id = $e->getParam($id, false)) {
             return false;
         }
@@ -150,7 +171,12 @@ class StatusDbPersistence implements ListenerAggregateInterface
             return false;
         }
 
-        $rowset = $this->table->select(array('id' => $id));
+        $criteria = array('id' => $id);
+        if ($this->user) {
+            $criteria['user'] = $this->user;
+        }
+
+        $rowset = $this->table->select($criteria);
         $item   = $rowset->current();
         if (!$item) {
             return false;
@@ -162,6 +188,10 @@ class StatusDbPersistence implements ListenerAggregateInterface
     {
         $select = $this->table->getSql()->select();
         $select->order('timestamp DESC');
+        if ($this->user) {
+            $select->where(array('user' => $this->user));
+        }
+
         $adapter   = new DbTablePaginator($select, $this->table->getAdapter());
         $paginator = new Paginator($adapter);
         return $paginator;
