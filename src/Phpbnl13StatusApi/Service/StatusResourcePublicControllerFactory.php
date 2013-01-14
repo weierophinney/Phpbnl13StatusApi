@@ -7,7 +7,7 @@ use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class StatusResourceControllerFactory implements FactoryInterface
+class StatusResourcePublicControllerFactory implements FactoryInterface
 {
     public function createService(ServiceLocatorInterface $controllers)
     {
@@ -16,6 +16,7 @@ class StatusResourceControllerFactory implements FactoryInterface
         $controller = new ResourceController();
         $controller->setResource($resource);
         $controller->setRoute('phpbnl13_status_api');
+        $controller->setHttpOptions(array('GET'));
         return $controller;
     }
 }

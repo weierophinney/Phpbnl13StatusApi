@@ -9,7 +9,7 @@ return array(
             'options' => array(
                 'route'    => '/api/status[/:id]]',
                 'defaults' => array(
-                    'controller' => 'Phpbnl13StatusApi\StatusResourceController',
+                    'controller' => 'Phpbnl13StatusApi\StatusResourcePublicController',
                 ),
                 'constraints' => array(
                     'id' => '^[a-f0-9]{5,40}$',
@@ -21,7 +21,7 @@ return array(
             'options' => array(
                 'route'    => '/api/status/:user[/:id]]',
                 'defaults' => array(
-                    'controller' => 'Phpbnl13StatusApi\StatusResourceController',
+                    'controller' => 'Phpbnl13StatusApi\StatusResourceUserController',
                 ),
                 'constraints' => array(
                     'user' => '^[a-z0-9_-]+$',
@@ -43,7 +43,8 @@ return array(
     ),
     'controllers' => array(
         'factories' => array(
-            'Phpbnl13StatusApi\StatusResourceController' => 'Phpbnl13StatusApi\Service\StatusResourceControllerFactory',
+            'Phpbnl13StatusApi\StatusResourcePublicController' => 'Phpbnl13StatusApi\Service\StatusResourcePublicControllerFactory',
+            'Phpbnl13StatusApi\StatusResourceUserController' => 'Phpbnl13StatusApi\Service\StatusResourceUserControllerFactory',
         ),
     ),
 );

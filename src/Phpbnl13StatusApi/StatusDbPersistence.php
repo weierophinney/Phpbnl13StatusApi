@@ -89,6 +89,10 @@ class StatusDbPersistence implements
         if (false === $data = $e->getParam($data, false)) {
             throw new CreationException('Missing data');
         }
+
+        // Inject user into data
+        $data['user'] = $this->user;
+
         $status = new Status();
         $status = $this->hydrator->hydrate($data, $status);
         if (!$this->validator->isValid($status)) {
