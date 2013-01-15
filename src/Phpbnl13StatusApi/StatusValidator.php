@@ -53,10 +53,12 @@ class StatusValidator
     {
         $url = $status->getImageUrl();
         if (!is_string($url)) {
+"Image URL is invalid\n";
             return false;
         }
         $url = trim($url);
         if (empty($url)) {
+"Image URL is empty\n";
             return false;
         }
         return true;
@@ -66,10 +68,12 @@ class StatusValidator
     {
         $url = $status->getLinkUrl();
         if (!is_string($url)) {
+"Link URL is invalid\n";
             return false;
         }
         $url = trim($url);
         if (empty($url)) {
+"Link URL is empty\n";
             return false;
         }
         return true;

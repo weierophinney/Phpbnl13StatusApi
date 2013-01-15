@@ -86,9 +86,11 @@ class StatusDbPersistence implements
         if (!$this->user) {
             throw new CreationException('User must be specified in order to create a status');
         }
-        if (false === $data = $e->getParam($data, false)) {
+        if (false === $data = $e->getParam('data', false)) {
             throw new CreationException('Missing data');
         }
+
+        $data = (array) $data;
 
         // Inject user into data
         $data['user'] = $this->user;
@@ -113,13 +115,14 @@ class StatusDbPersistence implements
         if (!$this->user) {
             throw new UpdateException('User must be specified in order to update a status');
         }
-        if (false === $id = $e->getParam($id, false)) {
+        if (false === $id = $e->getParam('id', false)) {
             throw new UpdateException('Missing id');
         }
-        if (false === $data = $e->getParam($data, false)) {
+        if (false === $data = $e->getParam('data', false)) {
             throw new UpdateException('Missing data');
         }
 
+        $data   = (array) $data;
         $rowset = $this->table->select(array('id' => $id));
         $item   = $rowset->current();
         if (!$item) {
@@ -169,7 +172,7 @@ class StatusDbPersistence implements
         if (!$this->user) {
             return false;
         }
-        if (false === $id = $e->getParam($id, false)) {
+        if (false === $id = $e->getParam('id', false)) {
             return false;
         }
 
@@ -182,7 +185,7 @@ class StatusDbPersistence implements
 
     public function onFetch($e)
     {
-        if (false === $id = $e->getParam($id, false)) {
+        if (false === $id = $e->getParam('id', false)) {
             return false;
         }
 
@@ -196,7 +199,7 @@ class StatusDbPersistence implements
         if (!$item) {
             return false;
         }
-        return $item;
+        return $this->hydrator->extract($item);
     }
 
     public function onFetchAll($e)

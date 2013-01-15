@@ -67,18 +67,20 @@ class Status implements StatusInterface
 
     public function setTimestamp($timestamp)
     {
-        if (!is_int($timestamp)) {
+        if (!is_numeric($timestamp)) {
             throw new Exception\InvalidArgumentException(sprintf(
                 'Timestamp provided, "%s", is invalid; please provide a valid timestamp integer',
                 $timestamp
             ));
         }
-        $this->timestamp = $timestamp;
+        $this->timestamp = (int) $timestamp;
     }
 
     public function setImageUrl($url)
     {
-        if (!filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)) {
+        if (null !== $url
+            && !filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)
+        ) {
             throw new Exception\InvalidArgumentException(sprintf(
                 'Image URL must be valid; "%s" fails validation',
                 $url
@@ -89,7 +91,9 @@ class Status implements StatusInterface
 
     public function setLinkUrl($url)
     {
-        if (!filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)) {
+        if (null !== $url
+            && !filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)
+        ) {
             throw new Exception\InvalidArgumentException(sprintf(
                 'Link URL must be valid; "%s" fails validation',
                 $url
@@ -100,7 +104,9 @@ class Status implements StatusInterface
 
     public function setLinkTitle($title)
     {
-        if (!is_string($title) || empty($title)) {
+        if (null !== $title 
+            && (!is_string($title) || empty($title))
+        ) {
             throw new Exception\InvalidArgumentException(
                 'Link title must be a non-empty string'
             );
@@ -114,6 +120,7 @@ class Status implements StatusInterface
         if (!$this->id) {
             $this->setId($this->generateId());
         }
+        return $this->id;
     }
 
     public function getType()
