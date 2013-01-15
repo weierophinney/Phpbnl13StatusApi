@@ -2,6 +2,8 @@
 
 namespace Phpbnl13StatusApi;
 
+use Zend\Math\Rand;
+
 /**
  * Status post
  */
@@ -166,8 +168,9 @@ class Status implements StatusInterface
 
     protected function generateId()
     {
-        $type = $this->getType();
-        $seed = $type . ':' . $this->getTimestamp() . ':' . $this->getUser() . ':';
+        $type  = $this->getType();
+        $seed  = Rand::getFloat();
+        $seed .= ':' . $type . ':' . $this->getTimestamp() . ':' . $this->getUser() . ':';
         switch ($type) {
             case self::TYPE_STATUS:
                 $seed .= $this->getText();
