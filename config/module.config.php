@@ -7,25 +7,25 @@ return array(
         'phpbnl13_status_api' => array(
             'type' => 'Segment',
             'options' => array(
-                'route'    => '/api/status[/[:id]]',
+                'route'    => '/api/status[/]',
                 'defaults' => array(
                     'controller' => 'Phpbnl13StatusApi\StatusResourcePublicController',
                 ),
-                'constraints' => array(
-                    'id' => '^[a-f0-9]{5,40}$',
-                ),
             ),
-        ),
-        'phpbnl13_status_user_api' => array(
-            'type' => 'Segment',
-            'options' => array(
-                'route'    => '/api/status/:user[/[:id]]',
-                'defaults' => array(
-                    'controller' => 'Phpbnl13StatusApi\StatusResourceUserController',
-                ),
-                'constraints' => array(
-                    'user' => '^[a-z0-9_-]+$',
-                    'id'   => '^[a-f0-9]{5,40}$',
+            'may_terminate' => true,
+            'child_routes' => array(
+                'user' => array(
+                    'type' => 'Segment',
+                    'options' => array(
+                        'route'    => ':user[/[:id]]',
+                        'defaults' => array(
+                            'controller' => 'Phpbnl13StatusApi\StatusResourceUserController',
+                        ),
+                        'constraints' => array(
+                            'user' => '[a-z0-9_-]+',
+                            'id'   => '[a-f0-9]{5,40}',
+                        ),
+                    ),
                 ),
             ),
         ),

@@ -60,7 +60,7 @@ class Module
                 $item   = $e->getParam('item', false);
 
                 if ($item instanceof Status) {
-                    $params['route'] = 'phpbnl13_status_user_api';
+                    $params['route'] = 'phpbnl13_status_api/user';
                     $params['user']  = $item->getUser();
                     return;
                 }
@@ -73,7 +73,7 @@ class Module
                     return;
                 }
 
-                $e->setParam('route', 'phpbnl13_status_user_api');
+                $e->setParam('route', 'phpbnl13_status_api/user');
                 $params['user']  = $item['user'];
             });
         }, 100);

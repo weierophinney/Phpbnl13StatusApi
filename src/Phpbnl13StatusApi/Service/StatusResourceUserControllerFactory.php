@@ -15,7 +15,7 @@ class StatusResourceUserControllerFactory implements FactoryInterface
         $resource   = $services->get('Phpbnl13StatusApi\StatusResource');
         $controller = new ResourceController('Phpbnl13StatusApi\StatusResourceController');
         $controller->setResource($resource);
-        $controller->setRoute('phpbnl13_status_user_api');
+        $controller->setRoute('phpbnl13_status_api/user');
         return $controller;
     }
 }
