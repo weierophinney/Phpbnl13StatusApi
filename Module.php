@@ -32,7 +32,10 @@ class Module
             return;
         }
         $controller = $matches->getParam('controller', false);
-        if ($controller != 'Phpbnl13StatusApi\StatusResourceController') {
+        if (!in_array(
+            $controller, 
+            array('Phpbnl13StatusApi\StatusResourcePublicController', 'Phpbnl13StatusApi\StatusResourceUserController')
+        )) {
             return;
         }
 
@@ -42,17 +45,22 @@ class Module
 
         // Set a listener on the createLinks helper to ensure individual status links
         // use the User route, and pass in the user to the route.
-        $sharedEvents->attach('PhlyRestfully\ResourceController', 'dispatch', function ($e) {
+        $sharedEvents->attach('Phpbnl13StatusApi\StatusResourceController', 'dispatch', function ($e) {
             $controller = $e->getTarget();
             $links      = $controller->links();
             $events     = $links->getEventManager();
 
             $events->attach('createLinks', function ($e) {
+                $route = $e->getParam('route');
+                if ($route != 'phpbnl13_status_api') {
+                    return;
+                }
+
                 $params = $e->getParam('params');
                 $item   = $e->getParam('item', false);
 
                 if ($item instanceof Status) {
-                    $params['route'] = 'phpbnl_status_user_api',
+                    $params['route'] = 'phpbnl13_status_user_api',
                     $params['user']  = $item->getUser();
                     return;
                 }
@@ -65,7 +73,7 @@ class Module
                     return;
                 }
 
-                $params['route'] = 'phpbnl_status_user_api',
+                $e->setParam('route', 'phpbnl13_status_user_api');
                 $params['user']  = $item['user'];
             });
         }, 100);
