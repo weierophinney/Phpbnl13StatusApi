@@ -134,11 +134,9 @@ class StatusDbPersistence implements
             'link_url'   => true,
             'link_title' => true,
         );
-        $updates = array_intersect_key($allowedUpdates, $data);
-        $item    = array_merge($item, $updates);
+        $updates = array_intersect_key($data, $allowedUpdates);
 
-        $status = new Status();
-        $status = $this->hydrator->hydrate($item, $status);
+        $status = $this->hydrator->hydrate($updates, $item);
         if (!$this->validator->isValid($status)) {
             throw new UpdateException('Updated status failed validation');
         }
