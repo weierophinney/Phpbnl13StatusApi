@@ -7,7 +7,11 @@ class StatusValidator
     public function isValid(StatusInterface $status)
     {
         $user = $status->getUser();
-        if (!is_string($user) || empty(trim($user))) {
+        if (!is_string($user)) {
+            return false;
+        }
+        $user = trim($user);
+        if (empty($user)) {
             return false;
         }
 
@@ -35,7 +39,11 @@ class StatusValidator
     public function validateStatus(StatusInterface $status)
     {
         $text = $status->getText();
-        if (!is_string($text) || empty(trim($text))) {
+        if (!is_string($text)) {
+            return false;
+        }
+        $text = trim($text);
+        if (empty($text)) {
             return false;
         }
         return true;
@@ -44,7 +52,11 @@ class StatusValidator
     public function validateImage(StatusInterface $status)
     {
         $url = $status->getImageUrl();
-        if (!is_string($url) || empty(trim($url))) {
+        if (!is_string($url)) {
+            return false;
+        }
+        $url = trim($url);
+        if (empty($url)) {
             return false;
         }
         return true;
@@ -53,7 +65,11 @@ class StatusValidator
     public function validateLink(StatusInterface $status)
     {
         $url = $status->getLinkUrl();
-        if (!is_string($url) || empty(trim($url))) {
+        if (!is_string($url)) {
+            return false;
+        }
+        $url = trim($url);
+        if (empty($url)) {
             return false;
         }
         return true;

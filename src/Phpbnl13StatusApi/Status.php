@@ -111,7 +111,7 @@ class Status implements StatusInterface
 
     public function getId()
     {
-        if ($!$this->id) {
+        if (!$this->id) {
             $this->setId($this->generateId());
         }
     }
@@ -168,7 +168,7 @@ class Status implements StatusInterface
             case self::TYPE_IMAGE:
                 $seed .= $this->getImageUrl();
                 break;
-            case self::TYPE_LINK
+            case self::TYPE_LINK:
                 $seed .= $this->getLinkUrl();
                 break;
         }

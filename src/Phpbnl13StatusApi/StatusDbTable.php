@@ -11,11 +11,12 @@ class StatusDbTable extends AbstractTableGateway
 {
     public function __construct(Adapter $adapter, $table = 'status')
     {
-        $this->adapter           = $adapter;
-        $this->table             = $table;
-        $rowPrototype            = new Status();
-        $hydratorPrototype       = new ClassMethodsHydrator();
-        $this->resultSetProtoype = new HydratingResultSet($hydratorPrototype, $rowPrototype);
+        $this->adapter            = $adapter;
+        $this->table              = $table;
+        $rowPrototype             = new Status();
+        $hydratorPrototype        = new ClassMethodsHydrator();
+        $this->resultSetPrototype = new HydratingResultSet($hydratorPrototype, $rowPrototype);
+        $this->resultSetPrototype->buffer();
         $this->initialize();
     }
 }

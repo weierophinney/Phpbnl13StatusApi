@@ -125,7 +125,7 @@ class StatusDbPersistence implements
         if (!$item) {
             throw new UpdateException('Cannot update; status not found');
         }
-        $allowedUpdates = array(;
+        $allowedUpdates = array(
             'text'       => true,
             'image_url'  => true,
             'link_url'   => true,

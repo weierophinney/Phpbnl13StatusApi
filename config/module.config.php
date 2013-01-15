@@ -7,7 +7,7 @@ return array(
         'phpbnl13_status_api' => array(
             'type' => 'Segment',
             'options' => array(
-                'route'    => '/api/status[/:id]]',
+                'route'    => '/api/status[/[:id]]',
                 'defaults' => array(
                     'controller' => 'Phpbnl13StatusApi\StatusResourcePublicController',
                 ),
@@ -19,7 +19,7 @@ return array(
         'phpbnl13_status_user_api' => array(
             'type' => 'Segment',
             'options' => array(
-                'route'    => '/api/status/:user[/:id]]',
+                'route'    => '/api/status/:user[/[:id]]',
                 'defaults' => array(
                     'controller' => 'Phpbnl13StatusApi\StatusResourceUserController',
                 ),
