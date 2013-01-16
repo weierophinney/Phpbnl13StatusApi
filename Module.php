@@ -50,7 +50,7 @@ class Module
             $links      = $controller->links();
             $events     = $links->getEventManager();
 
-            $events->attach('createLinks', function ($e) {
+            $events->attach('createLink', function ($e) {
                 $route = $e->getParam('route');
                 if ($route != 'phpbnl13_status_api') {
                     return;
