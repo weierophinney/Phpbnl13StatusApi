@@ -45,14 +45,14 @@ class Module
 
         // Set a listener on the createLinks helper to ensure individual status links
         // use the User route, and pass in the user to the route.
-        $sharedEvents->attach('Phpbnl13StatusApi\StatusResourceController', 'dispatch', function ($e) {
+        $sharedEvents->attach('PhlyRestfully\ResourceController', 'dispatch', function ($e) {
             $controller = $e->getTarget();
             $links      = $controller->links();
             $events     = $links->getEventManager();
 
             $events->attach('createLink', function ($e) {
                 $route = $e->getParam('route');
-                if ($route != 'phpbnl13_status_api') {
+                if ($route != 'phpbnl13_status_api/public') {
                     return;
                 }
 
@@ -65,7 +65,7 @@ class Module
                     return;
                 }
 
-                if (!is_array($item)) {
+                if (!is_array($item) && !$item instanceof \ArrayAccess) {
                     return;
                 }
 

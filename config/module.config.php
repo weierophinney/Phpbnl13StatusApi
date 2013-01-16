@@ -13,12 +13,18 @@ return array(
                     'controller' => 'Phpbnl13StatusApi\StatusResourcePublicController',
                 ),
             ),
-            'may_terminate' => true,
+            'may_terminate' => false,
             'child_routes' => array(
+                'public' => array(
+                    'type' => 'Segment',
+                    'options' => array(
+                        'route'    => 'public[/]',
+                    ),
+                ),
                 'user' => array(
                     'type' => 'Segment',
                     'options' => array(
-                        'route'    => ':user[/[:id]]',
+                        'route'    => 'user/:user[/[:id]]',
                         'defaults' => array(
                             'controller' => 'Phpbnl13StatusApi\StatusResourceUserController',
                         ),
