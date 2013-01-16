@@ -1,7 +1,8 @@
 <?php
 return array(
     'phpbnl13_status_api' => array(
-        'table' => 'status',
+        'table'     => 'status',
+        'page_size' => 10, // number of status items to return by default
     ),
     'router' => array('routes' => array(
         'phpbnl13_status_api' => array(
