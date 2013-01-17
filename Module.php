@@ -39,28 +39,37 @@ class Module
             return;
         }
 
+        $user         = $matches->getParam('user', false);
         $app          = $e->getTarget();
         $events       = $app->getEventManager();
         $sharedEvents = $events->getSharedManager();
 
         // Set a listener on the createLinks helper to ensure individual status links
         // use the User route, and pass in the user to the route.
-        $sharedEvents->attach('PhlyRestfully\ResourceController', 'dispatch', function ($e) {
+        $sharedEvents->attach('PhlyRestfully\ResourceController', 'dispatch', function ($e) use ($user) {
             $controller = $e->getTarget();
             $links      = $controller->links();
             $events     = $links->getEventManager();
 
-            $events->attach('createLink', function ($e) {
+            $events->attach('createLink', function ($e) use ($user) {
                 $route = $e->getParam('route');
+                $params = $e->getParam('params');
+
+                if ($route == 'phpbnl13_status_api/user') {
+                    if ($user) {
+                        $params['user'] = $user;
+                    }
+                    return;
+                }
+
                 if ($route != 'phpbnl13_status_api/public') {
                     return;
                 }
 
-                $params = $e->getParam('params');
                 $item   = $e->getParam('item', false);
 
                 if ($item instanceof Status) {
-                    $params['route'] = 'phpbnl13_status_api/user';
+                    $e->setParam('route', 'phpbnl13_status_api/user');
                     $params['user']  = $item->getUser();
                     return;
                 }
@@ -79,7 +88,6 @@ class Module
         }, 100);
 
 
-        $user = $matches->getParam('user', false);
         if (!$user) {
             return;
         }
