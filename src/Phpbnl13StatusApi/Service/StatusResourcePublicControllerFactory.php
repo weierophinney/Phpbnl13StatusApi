@@ -21,7 +21,7 @@ class StatusResourcePublicControllerFactory implements FactoryInterface
         $controller->setResource($resource);
         $controller->setPageSize($pageSize);
         $controller->setRoute('phpbnl13_status_api/public');
-        $controller->setHttpOptions(array('GET'));
+        $controller->setResourceHttpOptions(array('GET'));
         return $controller;
     }
 }
