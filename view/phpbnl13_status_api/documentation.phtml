@@ -7,6 +7,10 @@ tutorial at PHPBenelux 2013.
 General
 -------
 
+The media type `application/hal+json` is used throughout; as such, all link 
+relations for any given collection or item will be in the `_links` member.
+Requests may be of either media type `application/hal+json` or `application/json`.
+
 If an error occurs at any end point for any action, an 
 `application/api-problem+json` response will be returned with the relevant 
 details.
@@ -26,6 +30,88 @@ Returns a response of type `application/hal+json`, with the member `items`;
 This endpoint is paginated, and uses the query string parameter `page` to 
 indicate the page requested.
 
+As an example:
+
+    GET /api/status/public?page=13
+    Accept: application/json
+
+    HTTP/1.1 200 OK
+    Content-Type: application/hal+json
+    Link: <<?php echo $this->serverUrl() ?>/api/status/documentation>; rel="describedby"
+    
+    {
+        "_links": {
+            "first": {
+                "href": "<?php echo $this->serverUrl() ?>/api/status/public"
+            },
+            "last": {
+                "href": "<?php echo $this->serverUrl() ?>/api/status/public?page=26"
+            },
+            "next": {
+                "href": "<?php echo $this->serverUrl() ?>/api/status/public?page=14"
+            },
+            "prev": {
+                "href": "<?php echo $this->serverUrl() ?>/api/status/public?page=12"
+            },
+            "self": {
+                "href": "<?php echo $this->serverUrl() ?>/api/status/public?page=13"
+            }
+        },
+        "items": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "<?php echo $this->serverUrl() ?>/api/status/user/rob/bcb075767861776065ba599f97e06bc90520a291"
+                    }
+                },
+                "item": {
+                    "id": "bcb075767861776065ba599f97e06bc90520a291",
+                    "image_url": null,
+                    "link_title": null,
+                    "link_url": null,
+                    "text": "I can haz new user!",
+                    "timestamp": "1358457081",
+                    "type": "status",
+                    "user": "rob"
+                }
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew/4b4a40e12ec6e578c8cc9a8ec6c56cb0580e90a0"
+                    }
+                },
+                "item": {
+                    "id": "4b4a40e12ec6e578c8cc9a8ec6c56cb0580e90a0",
+                    "image_url": null,
+                    "link_title": null,
+                    "link_url": null,
+                    "text": "Text describing image",
+                    "timestamp": "1358287885",
+                    "type": "status",
+                    "user": "matthew"
+                }
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew/a2f4c22a7508b20ac6f2fa42884b5b4a840fe67d"
+                    }
+                },
+                "item": {
+                    "id": "a2f4c22a7508b20ac6f2fa42884b5b4a840fe67d",
+                    "image_url": null,
+                    "link_title": null,
+                    "link_url": null,
+                    "text": "Text describing image",
+                    "timestamp": "1358287885",
+                    "type": "status",
+                    "user": "matthew"
+                }
+            }
+        ]
+    }
+
 /api/status/user/:user
 ----------------------
 
@@ -38,10 +124,139 @@ Returns a response of type `application/hal+json`, with the member `items`;
 This endpoint is paginated, and uses the query string parameter `page` to 
 indicate the page requested.
 
+    GET /api/status/user/matthew?page=13
+    Accept: application/json
+
+    HTTP/1.1 200 OK
+    Content-Type: application/hal+json
+    Link: <<?php echo $this->serverUrl() ?>/api/status/documentation>; rel="describedby"
+    
+    {
+        "_links": {
+            "first": {
+                "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew"
+            },
+            "last": {
+                "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew?page=26"
+            },
+            "next": {
+                "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew?page=14"
+            },
+            "prev": {
+                "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew?page=12"
+            },
+            "self": {
+                "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew?page=13"
+            }
+        },
+        "items": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew/c1bccdc6a9d017fac4bc14b37ff85c37440a4f82"
+                    }
+                },
+                "item": {
+                    "id": "c1bccdc6a9d017fac4bc14b37ff85c37440a4f82",
+                    "image_url": null,
+                    "link_title": null,
+                    "link_url": null,
+                    "text": "Text describing image",
+                    "timestamp": "1358287558",
+                    "type": "status",
+                    "user": "matthew"
+                }
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew/25deacf41f53847af9e9d588873f8721620a9b9c"
+                    }
+                },
+                "item": {
+                    "id": "25deacf41f53847af9e9d588873f8721620a9b9c",
+                    "image_url": null,
+                    "link_title": null,
+                    "link_url": null,
+                    "text": "Text describing image",
+                    "timestamp": "1358287557",
+                    "type": "status",
+                    "user": "matthew"
+                }
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew/b2b18b2cc85a7adaac50f3c3077870721d9c1d52"
+                    }
+                },
+                "item": {
+                    "id": "b2b18b2cc85a7adaac50f3c3077870721d9c1d52",
+                    "image_url": null,
+                    "link_title": null,
+                    "link_url": null,
+                    "text": "Text describing image",
+                    "timestamp": "1358287556",
+                    "type": "status",
+                    "user": "matthew"
+                }
+            }
+        ]
+    }
+
 POST
 ^^^^
 
-Allows creating a new status item for the given user.
+Allows creating a new status item for the given user. On success, a 201 
+response is returned with the newly created status in the body, and the
+URL of the new status in the Location header.
+
+    POST /api/status/user/rob
+    Accept: application/json
+    Content-Type: application/json
+
+    {
+        "type": "status",
+        "text": "Posting my status!"
+    }
+
+    HTTP/1.1 201 Created
+    Content-Type: application/hal+json
+    Link: <<?php echo $this->serverUrl() ?>/api/status/documentation>; rel="describedby"
+    Location: <?php echo $this->serverUrl() ?>/api/status/user/rob/af53e16abdbfc27570ae04b6fe49034c38baf40b
+    
+    {
+        "_links": {
+            "self": {
+                "href": "<?php echo $this->serverUrl() ?>/api/status/user/rob/af53e16abdbfc27570ae04b6fe49034c38baf40b"
+            },
+            "up": {
+                "href": "<?php echo $this->serverUrl() ?>/api/status/user/rob"
+            }
+        },
+        "item": {
+            "id": "af53e16abdbfc27570ae04b6fe49034c38baf40b",
+            "image_url": null,
+            "link_title": null,
+            "link_url": null,
+            "text": "Posting my status!",
+            "timestamp": 1358619199,
+            "type": "status",
+            "user": "rob"
+        }
+    }
+
+The following criteria must be met in the body of the status request:
+
+- A valid `type` **must** be present. `type` may be one of:
+    - "status"
+    - "image"
+    - "link"
+- For "status" types, the `text` member **must** be present.
+- For "image" types, the `image_url` member **must** be present. The `text` 
+  member is optional.
+- For "link" types, the `link_url` member **must** be present. The `text` 
+  and `link_title` members are optional.
 
 /api/status/user/:user/:id
 --------------------------
@@ -52,18 +267,125 @@ GET
 Returns a response of type `application/hal+json`, with the member `item`; 
 `item` will be a representation of the requested item.
 
+    GET /api/status/user/rob/af53e16abdbfc27570ae04b6fe49034c38baf40b
+    Accept: application/json
+
+    HTTP/1.1 200 OK
+    Content-Type: application/hal+json
+    Link: <<?php echo $this->serverUrl() ?>/api/status/documentation>; rel="describedby"
+    
+    {
+        "_links": {
+            "self": {
+                "href": "<?php echo $this->serverUrl() ?>/api/status/user/rob/af53e16abdbfc27570ae04b6fe49034c38baf40b"
+            },
+            "up": {
+                "href": "<?php echo $this->serverUrl() ?>/api/status/user/rob"
+            }
+        },
+        "item": {
+            "id": "af53e16abdbfc27570ae04b6fe49034c38baf40b",
+            "image_url": null,
+            "link_title": null,
+            "link_url": null,
+            "text": "Posting my status!",
+            "timestamp": 1358619199,
+            "type": "status",
+            "user": "rob"
+        }
+    }
+
 PUT
 ^^^
 
-Allows replacing the indicated item.
+Allows replacing the indicated item. See the documentation on **POST** for 
+valid members.
+
+    PUT /api/status/user/rob/af53e16abdbfc27570ae04b6fe49034c38baf40b
+    Content-Type: application/json
+    Accept: application/json
+
+    {
+        "type": "image",
+        "image_url": "http://www.mwop.net/favicon.ico",
+        "text": "A favicon!"
+    }
+
+    HTTP/1.1 200 OK
+    Content-Type: application/hal+json
+    Link: <<?php echo $this->serverUrl() ?>/api/status/documentation>; rel="describedby"
+    
+    {
+        "_links": {
+            "self": {
+                "href": "<?php echo $this->serverUrl() ?>/api/status/user/rob/af53e16abdbfc27570ae04b6fe49034c38baf40b"
+            },
+            "up": {
+                "href": "<?php echo $this->serverUrl() ?>/api/status/user/rob"
+            }
+        },
+        "item": {
+            "id": "af53e16abdbfc27570ae04b6fe49034c38baf40b",
+            "image_url": "http://www.mwop.net/favicon.ico",
+            "link_title": null,
+            "link_url": null,
+            "text": "A favicon!",
+            "timestamp": 1358619199,
+            "type": "image",
+            "user": "rob"
+        }
+    }
 
 PATCH
 ^^^^^
 
-Allows updating specific members of the requested item.
+Allows updating specific members of the requested item. See the documentation 
+on **POST** for valid members.
+
+    PATCH /api/status/user/rob/af53e16abdbfc27570ae04b6fe49034c38baf40b
+    Content-Type: application/json
+    Accept: application/json
+
+    {
+        "text": "Favicon for mwop.net"
+    }
+
+    HTTP/1.1 200 OK
+    Content-Type: application/hal+json
+    Link: <<?php echo $this->serverUrl() ?>/api/status/documentation>; rel="describedby"
+    
+    {
+        "_links": {
+            "self": {
+                "href": "<?php echo $this->serverUrl() ?>/api/status/user/rob/af53e16abdbfc27570ae04b6fe49034c38baf40b"
+            },
+            "up": {
+                "href": "<?php echo $this->serverUrl() ?>/api/status/user/rob"
+            }
+        },
+        "item": {
+            "id": "af53e16abdbfc27570ae04b6fe49034c38baf40b",
+            "image_url": "http://www.mwop.net/favicon.ico",
+            "link_title": null,
+            "link_url": null,
+            "text": "Favicon for mwop.net",
+            "timestamp": 1358619199,
+            "type": "image",
+            "user": "rob"
+        }
+    }
+
 
 DELETE
 ^^^^^^
 
 Allows deleting the requested item. This action will return a 204 response on 
 success.
+
+    DELETE /api/status/user/rob/af53e16abdbfc27570ae04b6fe49034c38baf40b
+    Accept: application/json
+
+    HTTP/1.1 204 No Content
+    Connection: close
+    Content-type: text/html
+    Link: <<?php echo $this->serverUrl() ?>/api/status/documentation>; rel="describedby"
