@@ -3,6 +3,7 @@
     "minimum-stability": "dev"
     "require": {
         "phly/phly-restfully": "dev-master",
+        "phly/phly-simple-page": "dev-master",
         "zend/zend-db": "2.1.*",
         "zend/zend-eventmanager": "2.1.*",
         "zend/math": "2.1.*",

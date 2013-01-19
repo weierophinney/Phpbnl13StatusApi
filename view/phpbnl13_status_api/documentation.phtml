@@ -1,0 +1,69 @@
+PHPBenelux 2013 "RESTful APIs with ZF2" Status API Example
+==========================================================
+
+This API demonstrates principles taught during the "RESTful APIs with ZF2" 
+tutorial at PHPBenelux 2013.
+
+General
+-------
+
+If an error occurs at any end point for any action, an 
+`application/api-problem+json` response will be returned with the relevant 
+details.
+
+You may request any given endpoint via the `OPTIONS` method to discover
+what available `HTTP` options are available.
+
+/api/status/public
+------------------
+
+GET
+^^^
+
+Returns a response of type `application/hal+json`, with the member `items`; 
+`items` will be an array of individual items.
+
+This endpoint is paginated, and uses the query string parameter `page` to 
+indicate the page requested.
+
+/api/status/user/:user
+----------------------
+
+GET
+^^^
+
+Returns a response of type `application/hal+json`, with the member `items`; 
+`items` will be an array of individual items.
+
+This endpoint is paginated, and uses the query string parameter `page` to 
+indicate the page requested.
+
+POST
+^^^^
+
+Allows creating a new status item for the given user.
+
+/api/status/user/:user/:id
+--------------------------
+
+GET
+^^^
+
+Returns a response of type `application/hal+json`, with the member `item`; 
+`item` will be a representation of the requested item.
+
+PUT
+^^^
+
+Allows replacing the indicated item.
+
+PATCH
+^^^^^
+
+Allows updating specific members of the requested item.
+
+DELETE
+^^^^^^
+
+Allows deleting the requested item. This action will return a 204 response on 
+success.

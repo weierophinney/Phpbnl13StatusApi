@@ -6,9 +6,9 @@ return array(
     ),
     'router' => array('routes' => array(
         'phpbnl13_status_api' => array(
-            'type' => 'Segment',
+            'type' => 'Literal',
             'options' => array(
-                'route'    => '/api/status[/]',
+                'route'    => '/api/status',
                 'defaults' => array(
                     'controller' => 'Phpbnl13StatusApi\StatusResourcePublicController',
                 ),
@@ -16,21 +16,31 @@ return array(
             'may_terminate' => false,
             'child_routes' => array(
                 'public' => array(
-                    'type' => 'Segment',
+                    'type' => 'Literal',
                     'options' => array(
-                        'route'    => 'public[/]',
+                        'route'    => '/public',
                     ),
                 ),
                 'user' => array(
                     'type' => 'Segment',
                     'options' => array(
-                        'route'    => 'user/:user[/[:id]]',
+                        'route'    => '/user/:user[/:id]',
                         'defaults' => array(
                             'controller' => 'Phpbnl13StatusApi\StatusResourceUserController',
                         ),
                         'constraints' => array(
                             'user' => '[a-z0-9_-]+',
                             'id'   => '[a-f0-9]{5,40}',
+                        ),
+                    ),
+                ),
+                'documentation' => array(
+                    'type' => 'Literal',
+                    'options' => array(
+                        'route'    => '/documentation.md',
+                        'defaults' => array(
+                            'controller' => 'PhlySimplePage\Controller\Page',
+                            'template'   => 'phpbnl13_status_api/documentation',
                         ),
                     ),
                 ),

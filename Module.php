@@ -23,6 +23,14 @@ class Module
         $app    = $e->getTarget();
         $events = $app->getEventManager();
         $events->attach('route', array($this, 'onRoute'), -100);
+
+        $sharedEvents = $events->getSharedManager();
+        $sharedEvents->attach(
+            'PhlySimplePage\PageController',
+            'dispatch',
+            array($this, 'onDispatchDocs'),
+            -1
+        );
     }
 
     public function onRoute($e)
@@ -38,6 +46,9 @@ class Module
         )) {
             return;
         }
+
+        // Add a "Link" header pointing to the documentation
+        $this->setDocumentationLink($e);
 
         $user         = $matches->getParam('user', false);
         $app          = $e->getTarget();
@@ -99,5 +110,34 @@ class Module
             return;
         }
         $persistence->setUser($user);
+    }
+
+    public function onDispatchDocs($e)
+    {
+        $route = $e->getRoute();
+        if ($route != 'phpbnl13_status_api/documentation') {
+            return;
+        }
+
+        $model = $e->getResult();
+        $model->setTerminal(true);
+
+        $response = $e->getResponse();
+        $response->getHeaders()->addHeaderLine('content-type', 'text/x-markdown');
+    }
+
+    protected function setDocumentationLink($e)
+    {
+        $app      = $e->getApplication();
+        $services = $app->getServiceManager();
+        $plugins  = $services->get('ControllerPluginManager');
+        $links    = $plugin->get('links');
+        $docsUrl  = $links->createLink('phpbnl13_status_api/documentation', false);
+
+        $response = $e->getResponse();
+        $reponse->getHeaders()->addHeaderLine(
+            'Link',
+            sprintf('<%s>; rel="describedby"', $docsUrl)
+        );
     }
 }
