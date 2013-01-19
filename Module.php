@@ -131,7 +131,7 @@ class Module
         $app      = $e->getApplication();
         $services = $app->getServiceManager();
         $plugins  = $services->get('ControllerPluginManager');
-        $links    = $plugin->get('links');
+        $links    = $plugins->get('links');
         $docsUrl  = $links->createLink('phpbnl13_status_api/documentation', false);
 
         $response = $e->getResponse();
