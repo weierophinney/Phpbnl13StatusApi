@@ -129,6 +129,7 @@ class StatusDbPersistence implements
             throw new UpdateException('Cannot update; status not found');
         }
         $allowedUpdates = array(
+            'type'       => true,
             'text'       => true,
             'image_url'  => true,
             'link_url'   => true,
