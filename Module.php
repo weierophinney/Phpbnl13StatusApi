@@ -47,13 +47,13 @@ class Module
             return;
         }
 
-        // Add a "Link" header pointing to the documentation
-        $this->setDocumentationLink($e);
-
         $user         = $matches->getParam('user', false);
         $app          = $e->getTarget();
         $events       = $app->getEventManager();
         $sharedEvents = $events->getSharedManager();
+
+        // Add a "Link" header pointing to the documentation
+        $sharedEvents->attach('PhlyRestfully\ResourceController', 'dispatch', array($this, 'setDocumentationLink'), 10);
 
         // Set a listener on the createLinks helper to ensure individual status links
         // use the User route, and pass in the user to the route.
@@ -114,7 +114,7 @@ class Module
 
     public function onDispatchDocs($e)
     {
-        $route = $e->getRoute();
+        $route = $e->getRouteMatch()->getMatchedRouteName();
         if ($route != 'phpbnl13_status_api/documentation') {
             return;
         }
@@ -126,16 +126,12 @@ class Module
         $response->getHeaders()->addHeaderLine('content-type', 'text/x-markdown');
     }
 
-    protected function setDocumentationLink($e)
+    public function setDocumentationLink($e)
     {
-        $app      = $e->getApplication();
-        $services = $app->getServiceManager();
-        $plugins  = $services->get('ControllerPluginManager');
-        $links    = $plugins->get('links');
-        $docsUrl  = $links->createLink('phpbnl13_status_api/documentation', false);
-
-        $response = $e->getResponse();
-        $reponse->getHeaders()->addHeaderLine(
+        $controller = $e->getTarget();
+        $docsUrl    = $controller->links()->createLink('phpbnl13_status_api/documentation', false);
+        $response   = $e->getResponse();
+        $response->getHeaders()->addHeaderLine(
             'Link',
             sprintf('<%s>; rel="describedby"', $docsUrl)
         );

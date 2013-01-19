@@ -37,7 +37,7 @@ return array(
                 'documentation' => array(
                     'type' => 'Literal',
                     'options' => array(
-                        'route'    => '/documentation.md',
+                        'route'    => '/documentation',
                         'defaults' => array(
                             'controller' => 'PhlySimplePage\Controller\Page',
                             'template'   => 'phpbnl13_status_api/documentation',
@@ -62,6 +62,11 @@ return array(
         'factories' => array(
             'Phpbnl13StatusApi\StatusResourcePublicController' => 'Phpbnl13StatusApi\Service\StatusResourcePublicControllerFactory',
             'Phpbnl13StatusApi\StatusResourceUserController' => 'Phpbnl13StatusApi\Service\StatusResourceUserControllerFactory',
+        ),
+    ),
+    'view_manager' => array(
+        'template_map' => array(
+            'phpbnl13_status_api/documentation' => __DIR__ . '/../view/phpbnl13_status_api/documentation.phtml',
         ),
     ),
 );
