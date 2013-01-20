@@ -26,7 +26,7 @@ class StatusDbTable extends AbstractTableGateway
     {
         $select = $this->getSql()->select();
         $select->order('timestamp DESC');
-        if (user) {
+        if ($user) {
             $select->where(array('user' => $user));
         }
 
