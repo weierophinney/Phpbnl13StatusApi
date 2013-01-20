@@ -9,8 +9,6 @@ use Zend\Db\Exception\ExceptionInterface as DbException;
 use Zend\Db\TableGateway\TableGatewayInterface as TableGateway;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
-use Zend\Paginator\Adapter\DbSelect as DbTablePaginator;
-use Zend\Paginator\Paginator;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 class StatusDbPersistence implements 
@@ -198,19 +196,11 @@ class StatusDbPersistence implements
         if (!$item) {
             return false;
         }
-        return $this->hydrator->extract($item);
+        return $item;
     }
 
     public function onFetchAll($e)
     {
-        $select = $this->table->getSql()->select();
-        $select->order('timestamp DESC');
-        if ($this->user) {
-            $select->where(array('user' => $this->user));
-        }
-
-        $adapter   = new DbTablePaginator($select, $this->table->getAdapter());
-        $paginator = new Paginator($adapter);
-        return $paginator;
+        return $this->table->fetchAll($this->user);
     }
 }

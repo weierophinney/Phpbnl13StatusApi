@@ -2,6 +2,9 @@
 
 namespace Phpbnl13StatusApi;
 
+use PhlyRestfully\RestfulJsonModel;
+use Zend\Stdlib\ClassMethods as ClassMethodsHydrator;
+
 class Module
 {
     public function getAutoloaderConfig()
@@ -47,13 +50,17 @@ class Module
             return;
         }
 
-        $user         = $matches->getParam('user', false);
         $app          = $e->getTarget();
+        $services     = $app->getServiceManager();
         $events       = $app->getEventManager();
         $sharedEvents = $events->getSharedManager();
+        $user         = $matches->getParam('user', false);
 
         // Add a "Link" header pointing to the documentation
         $sharedEvents->attach('PhlyRestfully\ResourceController', 'dispatch', array($this, 'setDocumentationLink'), 10);
+
+        // Attach the ClassMethods hydrator to the RestfulJsonModel, when found
+        $events->attach('render', array($this, 'attachHydratorToRestfulJsonModel'), 200);
 
         // Set a listener on the createLinks helper to ensure individual status links
         // use the User route, and pass in the user to the route.
@@ -85,7 +92,7 @@ class Module
                     return;
                 }
 
-                if (!is_array($item) && !$item instanceof \ArrayAccess) {
+                if (!is_array($item)) {
                     return;
                 }
 
@@ -104,7 +111,6 @@ class Module
         }
 
         // Set the user in the persistence listener
-        $services    = $app->getServiceManager();
         $persistence = $services->get('Phpbnl13StatusApi\PersistenceListener');
         if (!$persistence instanceof StatusPersistenceInterface) {
             return;
@@ -135,5 +141,15 @@ class Module
             'Link',
             sprintf('<%s>; rel="describedby"', $docsUrl)
         );
+    }
+
+    public function attachHydratorToRestfulJsonModel($e)
+    {
+        $result = $e->getResult();
+        if (!$result instanceof RestfulJsonModel) {
+            return;
+        }
+
+        $result->addHydrator('Phpbnl13StatusApi\Status', new ClassMethodsHydrator());
     }
 }
