@@ -32,7 +32,7 @@ class StatusDbTable extends AbstractTableGateway
 
         $adapter = new DbTablePaginator(
             $select, 
-            $this->table->getAdapter(),
+            $this->getAdapter(),
             $this->resultSetPrototype
         );
         $paginator = new Paginator($adapter);
