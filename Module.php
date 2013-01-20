@@ -3,7 +3,7 @@
 namespace Phpbnl13StatusApi;
 
 use PhlyRestfully\RestfulJsonModel;
-use Zend\Stdlib\ClassMethods as ClassMethodsHydrator;
+use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 class Module
 {
