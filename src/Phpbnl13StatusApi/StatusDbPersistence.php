@@ -153,18 +153,18 @@ class StatusDbPersistence implements
         }
 
         if (false === $id = $e->getParam('id', false)) {
-            throw new UpdateException('Missing id');
+            throw new PatchException('Missing id');
         }
 
         if (false === $data = $e->getParam('data', false)) {
-            throw new UpdateException('Missing data');
+            throw new PatchException('Missing data');
         }
 
         $data     = (array) $data;
         $rowset   = $this->table->select(array('id' => $id));
         $original = $rowset->current();
         if (!$original) {
-            throw new UpdateException('Cannot patch; status not found', 404);
+            throw new PatchException('Cannot patch; status not found', 404);
         }
 
         $allowedUpdates = array(
@@ -178,13 +178,13 @@ class StatusDbPersistence implements
 
         $status = $this->hydrator->hydrate($updates, $item);
         if (!$this->validator->isValid($status)) {
-            throw new UpdateException('Patched status failed validation');
+            throw new PatchException('Patched status failed validation');
         }
 
         try {
             $this->table->update($updates, array('id' => $id));
         } catch (DbException $exception) {
-            throw new UpdateException('DB exception when updating status', null, $exception);
+            throw new PatchException('DB exception when updating status', null, $exception);
         }
 
         return $status;
