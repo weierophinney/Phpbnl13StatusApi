@@ -9,3 +9,8 @@ create structured responses that utilize hypermedia.
 This particular API allows posting and manipulating "status" -- we will focus on
 text-only status and image + text status.
 
+
+TODO
+----
+
+- Fix StatusDbPersistence::update() to be a proper update, not a patch
