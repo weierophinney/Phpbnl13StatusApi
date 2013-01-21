@@ -45,7 +45,9 @@ class Module
             return;
         }
         $controller = $matches->getParam('controller', false);
-        if (!in_array( $controller, $controllers)) {
+        if (!in_array($controller, 
+            array('Phpbnl13StatusApi\StatusResourcePublicController', 'Phpbnl13StatusApi\StatusResourceUserController')
+        )) {
             return;
         }
 
