@@ -116,16 +116,57 @@ class StatusDbPersistence implements
         if (false === $id = $e->getParam('id', false)) {
             throw new UpdateException('Missing id');
         }
+
         if (false === $data = $e->getParam('data', false)) {
             throw new UpdateException('Missing data');
         }
 
-        $data   = (array) $data;
-        $rowset = $this->table->select(array('id' => $id));
-        $item   = $rowset->current();
-        if (!$item) {
-            throw new UpdateException('Cannot update; status not found');
+        $data     = (array) $data;
+        $rowset   = $this->table->select(array('id' => $id));
+        $original = $rowset->current();
+        if (!$original) {
+            throw new UpdateException('Cannot update; status not found', 404);
         }
+
+        $updated = $this->hydrator->hydrate($data, new Status());
+        $updated->setId($original->getId());
+        $updated->setTimestamp($original->getTimestamp());
+
+        if (!$this->validator->isValid($updated)) {
+            throw new UpdateException('Updated status failed validation');
+        }
+
+        $data = $this->hydrator->extract($updated);
+        try {
+            $this->table->update($data, array('id' => $id));
+        } catch (DbException $exception) {
+            throw new UpdateException('DB exception when updating status', null, $exception);
+        }
+
+        return $updated;
+    }
+
+    public function onPatch($e)
+    {
+        if (!$this->user) {
+            throw new PatchException('User must be specified in order to patch a status');
+        }
+
+        if (false === $id = $e->getParam('id', false)) {
+            throw new UpdateException('Missing id');
+        }
+
+        if (false === $data = $e->getParam('data', false)) {
+            throw new UpdateException('Missing data');
+        }
+
+        $data     = (array) $data;
+        $rowset   = $this->table->select(array('id' => $id));
+        $original = $rowset->current();
+        if (!$original) {
+            throw new UpdateException('Cannot patch; status not found', 404);
+        }
+
         $allowedUpdates = array(
             'type'       => true,
             'text'       => true,
@@ -137,31 +178,16 @@ class StatusDbPersistence implements
 
         $status = $this->hydrator->hydrate($updates, $item);
         if (!$this->validator->isValid($status)) {
-            throw new UpdateException('Updated status failed validation');
+            throw new UpdateException('Patched status failed validation');
         }
 
-        $data = $this->hydrator->extract($status);
         try {
-            $this->table->update($data, array('id' => $id));
+            $this->table->update($updates, array('id' => $id));
         } catch (DbException $exception) {
             throw new UpdateException('DB exception when updating status', null, $exception);
         }
 
-        return $data;
-    }
-
-    public function onPatch($e)
-    {
-        if (!$this->user) {
-            throw new PatchException('User must be specified in order to patch a status');
-        }
-        try {
-            $data = $this->onUpdate($e);
-        } catch (UpdateException $exception) {
-            $exception = $exception->getPrevious();
-            throw new PatchException('DB exception when patching status', null, $exception);
-        }
-        return $data;
+        return $status;
     }
 
     public function onDelete($e)
