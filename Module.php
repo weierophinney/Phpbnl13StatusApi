@@ -38,15 +38,14 @@ class Module
 
     public function onRoute($e)
     {
+        $controllers  = array('Phpbnl13StatusApi\StatusResourcePublicController', 'Phpbnl13StatusApi\StatusResourceUserController');
+
         $matches = $e->getRouteMatch();
         if (!$matches) {
             return;
         }
         $controller = $matches->getParam('controller', false);
-        if (!in_array(
-            $controller, 
-            array('Phpbnl13StatusApi\StatusResourcePublicController', 'Phpbnl13StatusApi\StatusResourceUserController')
-        )) {
+        if (!in_array( $controller, $controllers)) {
             return;
         }
 
@@ -57,14 +56,19 @@ class Module
         $user         = $matches->getParam('user', false);
 
         // Add a "Link" header pointing to the documentation
-        $sharedEvents->attach('PhlyRestfully\ResourceController', 'dispatch', array($this, 'setDocumentationLink'), 10);
+        $sharedEvents->attach(
+            $controllers, 
+            'dispatch', 
+            array($this, 'setDocumentationLink'), 
+            10
+        );
 
         // Attach the ClassMethods hydrator to the RestfulJsonModel, when found
         $events->attach('render', array($this, 'attachHydratorToRestfulJsonModel'), 200);
 
         // Set a listener on the createLinks helper to ensure individual status links
         // use the User route, and pass in the user to the route.
-        $sharedEvents->attach('PhlyRestfully\ResourceController', 'dispatch', function ($e) use ($user) {
+        $sharedEvents->attach($controllers, 'dispatch', function ($e) use ($user) {
             $controller = $e->getTarget();
             $links      = $controller->links();
             $events     = $links->getEventManager();
