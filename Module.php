@@ -38,7 +38,7 @@ class Module
 
     public function onRoute($e)
     {
-        $controllers  = array('Phpbnl13StatusApi\StatusResourcePublicController', 'Phpbnl13StatusApi\StatusResourceUserController');
+        $controllers = 'Phpbnl13StatusApi\StatusResourceController';
 
         $matches = $e->getRouteMatch();
         if (!$matches) {
