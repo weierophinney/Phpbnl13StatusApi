@@ -2,7 +2,7 @@
     "name": "phly/phpblnl13-status-api",
     "minimum-stability": "dev"
     "require": {
-        "phly/phly-restfully": "<=1.0.0",
+        "phly/phly-restfully": "dev-master",
         "phly/phly-simple-page": "dev-master",
         "zend/zend-db": "2.1.*",
         "zend/zend-eventmanager": "2.1.*",
