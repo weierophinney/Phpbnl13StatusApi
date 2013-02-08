@@ -2,7 +2,6 @@
 
 namespace Phpbnl13StatusApi;
 
-use PhlyRestfully\RestfulJsonModel;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 class Module
@@ -65,14 +64,15 @@ class Module
             10
         );
 
-        // Attach the ClassMethods hydrator to the RestfulJsonModel, when found
-        $events->attach('render', array($this, 'attachHydratorToRestfulJsonModel'), 200);
+        // Attach the ClassMethods hydrator to the RestfulJsonRenderer
+        $renderer = $services->get('PhlyRestfully\JsonRenderer');
+        $renderer->addHydrator('Phpbnl13StatusApi\Status', new ClassMethodsHydrator());
 
         // Set a listener on the createLinks helper to ensure individual status links
         // use the User route, and pass in the user to the route.
         $sharedEvents->attach($controllers, 'dispatch', function ($e) use ($user) {
             $controller = $e->getTarget();
-            $links      = $controller->links();
+            $links      = $controller->halLinks();
             $events     = $links->getEventManager();
 
             $events->attach('createLink', function ($e) use ($user) {
@@ -147,15 +147,5 @@ class Module
             'Link',
             sprintf('<%s>; rel="describedby"', $docsUrl)
         );
-    }
-
-    public function attachHydratorToRestfulJsonModel($e)
-    {
-        $result = $e->getResult();
-        if (!$result instanceof RestfulJsonModel) {
-            return;
-        }
-
-        $result->addHydrator('Phpbnl13StatusApi\Status', new ClassMethodsHydrator());
     }
 }
