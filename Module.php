@@ -141,7 +141,7 @@ class Module
     public function setDocumentationLink($e)
     {
         $controller = $e->getTarget();
-        $docsUrl    = $controller->links()->createLink('phpbnl13_status_api/documentation', false);
+        $docsUrl    = $controller->halLinks()->createLink('phpbnl13_status_api/documentation', false);
         $response   = $e->getResponse();
         $response->getHeaders()->addHeaderLine(
             'Link',
