@@ -11,7 +11,7 @@ use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
-class StatusDbPersistence implements 
+class StatusDbPersistence implements
     ListenerAggregateInterface,
     StatusPersistenceInterface
 {
@@ -31,8 +31,8 @@ class StatusDbPersistence implements
     protected $table;
 
     /**
-     * User for whom to manipulate status; none removes ability to 
-     * create/update/patch/delete, but will retrieve any status by id, or a 
+     * User for whom to manipulate status; none removes ability to
+     * create/update/patch/delete, but will retrieve any status by id, or a
      * list of all statuses from all users.
      * @var string
      */
@@ -176,7 +176,7 @@ class StatusDbPersistence implements
         );
         $updates = array_intersect_key($data, $allowedUpdates);
 
-        $status = $this->hydrator->hydrate($updates, $item);
+        $status = $this->hydrator->hydrate($updates, $original);
         if (!$this->validator->isValid($status)) {
             throw new PatchException('Patched status failed validation');
         }
