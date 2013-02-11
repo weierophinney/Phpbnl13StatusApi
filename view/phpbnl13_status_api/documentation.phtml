@@ -8,7 +8,7 @@ General
 -------
 
 The media type `application/hal+json` is used throughout; as such, all link 
-relations for any given collection or item will be in the `_links` member.
+relations for any given collection or resource will be in the `_links` member.
 Requests may be of either media type `application/hal+json` or `application/json`.
 
 If an error occurs at any end point for any action, an 
@@ -24,8 +24,14 @@ what available `HTTP` options are available.
 GET
 ^^^
 
-Returns a response of type `application/hal+json`, with the member `items`; 
-`items` will be an array of individual items.
+Returns a response of type `application/hal+json`. The resource will contain
+the following properties:
+
+- `count` - the total number of resources
+- `page` - the current page
+- `per_page` - the number of resources per page
+- `_embedded`, which will contain the property `status`, containing the list of
+   individual status updates.
 
 This endpoint is paginated, and uses the query string parameter `page` to 
 indicate the page requested.
@@ -57,14 +63,17 @@ As an example:
                 "href": "<?php echo $this->serverUrl() ?>/api/status/public?page=13"
             }
         },
-        "items": [
-            {
-                "_links": {
-                    "self": {
-                        "href": "<?php echo $this->serverUrl() ?>/api/status/user/rob/bcb075767861776065ba599f97e06bc90520a291"
-                    }
-                },
-                "item": {
+        "count": 77,
+        "page": 13,
+        "per_page": 3,
+        "_embedded": {
+            "status": [
+                {
+                    "_links": {
+                        "self": {
+                            "href": "<?php echo $this->serverUrl() ?>/api/status/user/rob/bcb075767861776065ba599f97e06bc90520a291"
+                        }
+                    },
                     "id": "bcb075767861776065ba599f97e06bc90520a291",
                     "image_url": null,
                     "link_title": null,
@@ -73,15 +82,13 @@ As an example:
                     "timestamp": "1358457081",
                     "type": "status",
                     "user": "rob"
-                }
-            },
-            {
-                "_links": {
-                    "self": {
-                        "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew/4b4a40e12ec6e578c8cc9a8ec6c56cb0580e90a0"
-                    }
                 },
-                "item": {
+                {
+                    "_links": {
+                        "self": {
+                            "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew/4b4a40e12ec6e578c8cc9a8ec6c56cb0580e90a0"
+                        }
+                    },
                     "id": "4b4a40e12ec6e578c8cc9a8ec6c56cb0580e90a0",
                     "image_url": null,
                     "link_title": null,
@@ -90,15 +97,13 @@ As an example:
                     "timestamp": "1358287885",
                     "type": "status",
                     "user": "matthew"
-                }
-            },
-            {
-                "_links": {
-                    "self": {
-                        "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew/a2f4c22a7508b20ac6f2fa42884b5b4a840fe67d"
-                    }
                 },
-                "item": {
+                {
+                    "_links": {
+                        "self": {
+                            "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew/a2f4c22a7508b20ac6f2fa42884b5b4a840fe67d"
+                        }
+                    },
                     "id": "a2f4c22a7508b20ac6f2fa42884b5b4a840fe67d",
                     "image_url": null,
                     "link_title": null,
@@ -108,8 +113,8 @@ As an example:
                     "type": "status",
                     "user": "matthew"
                 }
-            }
-        ]
+            ]
+        }
     }
 
 /api/status/user/:user
@@ -118,8 +123,15 @@ As an example:
 GET
 ^^^
 
-Returns a response of type `application/hal+json`, with the member `items`; 
-`items` will be an array of individual items.
+Returns a response of type `application/hal+json`. The resource will contain
+the following properties:
+
+- `count` - the total number of resources
+- `page` - the current page
+- `per_page` - the number of resources per page
+- `_embedded`, which will contain the property `status`, containing the list of
+   individual status updates.
+
 
 This endpoint is paginated, and uses the query string parameter `page` to 
 indicate the page requested.
@@ -149,14 +161,17 @@ indicate the page requested.
                 "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew?page=13"
             }
         },
-        "items": [
-            {
-                "_links": {
-                    "self": {
-                        "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew/c1bccdc6a9d017fac4bc14b37ff85c37440a4f82"
-                    }
-                },
-                "item": {
+        "count": 76,
+        "page": 13,
+        "per_page": 3,
+        "_embedded": {
+            "status": [
+                {
+                    "_links": {
+                        "self": {
+                            "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew/c1bccdc6a9d017fac4bc14b37ff85c37440a4f82"
+                        }
+                    },
                     "id": "c1bccdc6a9d017fac4bc14b37ff85c37440a4f82",
                     "image_url": null,
                     "link_title": null,
@@ -165,15 +180,13 @@ indicate the page requested.
                     "timestamp": "1358287558",
                     "type": "status",
                     "user": "matthew"
-                }
-            },
-            {
-                "_links": {
-                    "self": {
-                        "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew/25deacf41f53847af9e9d588873f8721620a9b9c"
-                    }
                 },
-                "item": {
+                {
+                    "_links": {
+                        "self": {
+                            "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew/25deacf41f53847af9e9d588873f8721620a9b9c"
+                        }
+                    },
                     "id": "25deacf41f53847af9e9d588873f8721620a9b9c",
                     "image_url": null,
                     "link_title": null,
@@ -182,15 +195,13 @@ indicate the page requested.
                     "timestamp": "1358287557",
                     "type": "status",
                     "user": "matthew"
-                }
-            },
-            {
-                "_links": {
-                    "self": {
-                        "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew/b2b18b2cc85a7adaac50f3c3077870721d9c1d52"
-                    }
                 },
-                "item": {
+                {
+                    "_links": {
+                        "self": {
+                            "href": "<?php echo $this->serverUrl() ?>/api/status/user/matthew/b2b18b2cc85a7adaac50f3c3077870721d9c1d52"
+                        }
+                    },
                     "id": "b2b18b2cc85a7adaac50f3c3077870721d9c1d52",
                     "image_url": null,
                     "link_title": null,
@@ -200,8 +211,8 @@ indicate the page requested.
                     "type": "status",
                     "user": "matthew"
                 }
-            }
-        ]
+            ]
+        }
     }
 
 POST
@@ -229,21 +240,16 @@ URL of the new status in the Location header.
         "_links": {
             "self": {
                 "href": "<?php echo $this->serverUrl() ?>/api/status/user/rob/af53e16abdbfc27570ae04b6fe49034c38baf40b"
-            },
-            "up": {
-                "href": "<?php echo $this->serverUrl() ?>/api/status/user/rob"
             }
         },
-        "item": {
-            "id": "af53e16abdbfc27570ae04b6fe49034c38baf40b",
-            "image_url": null,
-            "link_title": null,
-            "link_url": null,
-            "text": "Posting my status!",
-            "timestamp": 1358619199,
-            "type": "status",
-            "user": "rob"
-        }
+        "id": "af53e16abdbfc27570ae04b6fe49034c38baf40b",
+        "image_url": null,
+        "link_title": null,
+        "link_url": null,
+        "text": "Posting my status!",
+        "timestamp": 1358619199,
+        "type": "status",
+        "user": "rob"
     }
 
 The following criteria must be met in the body of the status request:
@@ -264,8 +270,8 @@ The following criteria must be met in the body of the status request:
 GET
 ^^^
 
-Returns a response of type `application/hal+json`, with the member `item`; 
-`item` will be a representation of the requested item.
+Returns a response of type `application/hal+json`, with a representation of the 
+requested item.
 
     GET /api/status/user/rob/af53e16abdbfc27570ae04b6fe49034c38baf40b
     Accept: application/json
@@ -278,21 +284,16 @@ Returns a response of type `application/hal+json`, with the member `item`;
         "_links": {
             "self": {
                 "href": "<?php echo $this->serverUrl() ?>/api/status/user/rob/af53e16abdbfc27570ae04b6fe49034c38baf40b"
-            },
-            "up": {
-                "href": "<?php echo $this->serverUrl() ?>/api/status/user/rob"
             }
         },
-        "item": {
-            "id": "af53e16abdbfc27570ae04b6fe49034c38baf40b",
-            "image_url": null,
-            "link_title": null,
-            "link_url": null,
-            "text": "Posting my status!",
-            "timestamp": 1358619199,
-            "type": "status",
-            "user": "rob"
-        }
+        "id": "af53e16abdbfc27570ae04b6fe49034c38baf40b",
+        "image_url": null,
+        "link_title": null,
+        "link_url": null,
+        "text": "Posting my status!",
+        "timestamp": 1358619199,
+        "type": "status",
+        "user": "rob"
     }
 
 PUT
@@ -319,21 +320,16 @@ valid members.
         "_links": {
             "self": {
                 "href": "<?php echo $this->serverUrl() ?>/api/status/user/rob/af53e16abdbfc27570ae04b6fe49034c38baf40b"
-            },
-            "up": {
-                "href": "<?php echo $this->serverUrl() ?>/api/status/user/rob"
             }
         },
-        "item": {
-            "id": "af53e16abdbfc27570ae04b6fe49034c38baf40b",
-            "image_url": "http://www.mwop.net/favicon.ico",
-            "link_title": null,
-            "link_url": null,
-            "text": "A favicon!",
-            "timestamp": 1358619199,
-            "type": "image",
-            "user": "rob"
-        }
+        "id": "af53e16abdbfc27570ae04b6fe49034c38baf40b",
+        "image_url": "http://www.mwop.net/favicon.ico",
+        "link_title": null,
+        "link_url": null,
+        "text": "A favicon!",
+        "timestamp": 1358619199,
+        "type": "image",
+        "user": "rob"
     }
 
 PATCH
@@ -358,21 +354,16 @@ on **POST** for valid members.
         "_links": {
             "self": {
                 "href": "<?php echo $this->serverUrl() ?>/api/status/user/rob/af53e16abdbfc27570ae04b6fe49034c38baf40b"
-            },
-            "up": {
-                "href": "<?php echo $this->serverUrl() ?>/api/status/user/rob"
             }
         },
-        "item": {
-            "id": "af53e16abdbfc27570ae04b6fe49034c38baf40b",
-            "image_url": "http://www.mwop.net/favicon.ico",
-            "link_title": null,
-            "link_url": null,
-            "text": "Favicon for mwop.net",
-            "timestamp": 1358619199,
-            "type": "image",
-            "user": "rob"
-        }
+        "id": "af53e16abdbfc27570ae04b6fe49034c38baf40b",
+        "image_url": "http://www.mwop.net/favicon.ico",
+        "link_title": null,
+        "link_url": null,
+        "text": "Favicon for mwop.net",
+        "timestamp": 1358619199,
+        "type": "image",
+        "user": "rob"
     }
 
 
