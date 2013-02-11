@@ -21,7 +21,7 @@ class StatusResourceUserControllerFactory implements FactoryInterface
         $controller->setResource($resource);
         $controller->setPageSize($pageSize);
         $controller->setRoute('phpbnl13_status_api/user');
+        $controller->setCollectionName('status');
         return $controller;
     }
 }
-
