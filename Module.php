@@ -2,7 +2,7 @@
 
 namespace Phpbnl13StatusApi;
 
-use PhlyRestfully\View\RestfulViewModel;
+use PhlyRestfully\View\RestfulJsonModel;
 use Zend\Paginator\Paginator;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
@@ -65,6 +65,7 @@ class Module
             array($this, 'setDocumentationLink'), 
             10
         );
+        // Add metadata to collections
         $sharedEvents->attach(
             $controllers,
             'dispatch',
@@ -155,21 +156,20 @@ class Module
     public function onDispatchCollection($e)
     {
         $result = $e->getResult();
-        if (!$result instanceof RestfulViewModel) {
+        if (!$result instanceof RestfulJsonModel) {
             return;
         }
         if (!$result->isHalCollection()) {
             return;
         }
         $collection = $result->getPayload();
-        $collection = $collection->collection;
-        if (!$collection instanceof Paginator) {
+        if (!$collection->collection instanceof Paginator) {
             return;
         }
         $collection->setAttributes(array(
             'count'    => $collection->collection->getTotalItemCount(),
-            'page'     => $collection->collection->page,
-            'per_page' => $collection->collection->pageSize,
+            'page'     => $collection->page,
+            'per_page' => $collection->pageSize,
         ));
     }
 }
