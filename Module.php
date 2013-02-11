@@ -35,12 +35,6 @@ class Module
             array($this, 'onDispatchDocs'),
             -1
         );
-        $sharedEvents->attach(
-            'Phpbnl13StatusApi\StatusResourceController',
-            'dispatch',
-            array($this, 'onDispatchCollection'),
-            -1
-        );
     }
 
     public function onRoute($e)
@@ -70,6 +64,12 @@ class Module
             'dispatch', 
             array($this, 'setDocumentationLink'), 
             10
+        );
+        $sharedEvents->attach(
+            $controllers,
+            'dispatch',
+            array($this, 'onDispatchCollection'),
+            -1
         );
 
         // Attach the ClassMethods hydrator to the RestfulJsonRenderer
