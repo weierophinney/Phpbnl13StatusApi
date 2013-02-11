@@ -2,6 +2,8 @@
 
 namespace Phpbnl13StatusApi;
 
+use PhlyRestfully\View\RestfulViewModel;
+use Zend\Paginator\Paginator;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 class Module
@@ -31,6 +33,12 @@ class Module
             'PhlySimplePage\PageController',
             'dispatch',
             array($this, 'onDispatchDocs'),
+            -1
+        );
+        $sharedEvents->attach(
+            'Phpbnl13StatusApi\StatusResourceController',
+            'dispatch',
+            array($this, 'onDispatchCollection'),
             -1
         );
     }
@@ -142,5 +150,26 @@ class Module
             'Link',
             sprintf('<%s>; rel="describedby"', $docsUrl)
         );
+    }
+
+    public function onDispatchCollection($e)
+    {
+        $result = $e->getResult();
+        if (!$result instanceof RestfulViewModel) {
+            return;
+        }
+        if (!$result->isHalCollection()) {
+            return;
+        }
+        $collection = $result->getPayload();
+        $collection = $collection->collection;
+        if (!$collection instanceof Paginator) {
+            return;
+        }
+        $collection->setAttributes(array(
+            'count'    => $collection->collection->getTotalItemCount(),
+            'page'     => $collection->collection->page,
+            'per_page' => $collection->collection->pageSize,
+        ));
     }
 }
