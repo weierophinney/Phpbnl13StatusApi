@@ -73,10 +73,6 @@ class Module
             -1
         );
 
-        // Attach the ClassMethods hydrator to the RestfulJsonRenderer
-        $renderer = $services->get('PhlyRestfully\JsonRenderer');
-        $renderer->addHydrator('Phpbnl13StatusApi\Status', new ClassMethodsHydrator());
-
         if (!$user) {
             return;
         }

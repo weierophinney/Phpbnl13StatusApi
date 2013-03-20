@@ -4,6 +4,13 @@ return array(
         'table'     => 'status',
         'page_size' => 10, // number of status items to return by default
     ),
+    'phlyrestfully' => array(
+        'renderer' => array(
+            'hydrators' => array(
+                'Phpbnl13StatusApi\Status' => 'Hydrator\ClassMethods',
+            ),
+        ),
+    ),
     'router' => array('routes' => array(
         'phpbnl13_status_api' => array(
             'type' => 'Literal',
@@ -51,6 +58,9 @@ return array(
         'aliases' => array(
             'Phpbnl13StatusApi\DbAdapter' => 'Zend\Db\Adapter\Adapter',
             'Phpbnl13StatusApi\PersistenceListener' => 'Phpbnl13StatusApi\StatusDbPersistence',
+        ),
+        'invokables' => array(
+            'Hydrator\ClassMethods' => 'Zend\Stdlib\Hydrator\ClassMethods',
         ),
         'factories' => array(
             'Phpbnl13StatusApi\DbTable' => 'Phpbnl13StatusApi\Service\DbTableFactory',
