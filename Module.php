@@ -73,48 +73,50 @@ class Module
             -1
         );
 
+        // $sharedEvents->attach('Phpbnl13StatusApi\StatusResourcePublicController', 'getList.post', function ($e) {
+        $sharedEvents->attach($controllers, 'getList.post', function ($e) {
+            $collection = $e->getParam('collection');
+            $collection->setResourceRoute('phpbnl13_status_api/user');
+        });
+
+        // Set a listener on the renderCollection.resource event to ensure 
+        // individual status links pass in the user to the route.
+        $helpers = $services->get('ViewHelperManager');
+        $links   = $helpers->get('HalLinks');
+        $links->getEventManager()->attach('renderCollection.resource', function ($e) use ($user) {
+            $eventParams = $e->getParams();
+            $route       = $eventParams['route'];
+            $routeParams = $eventParams['routeParams'];
+
+            if ($route != 'phpbnl13_status_api/user'
+                && $route != 'phpbnl13_status_api/public'
+            ) {
+                return;
+            }
+
+            $resource = $eventParams['resource'];
+
+            if ($resource instanceof Status) {
+                $eventParams['route'] = 'phpbnl13_status_api/user';
+                $eventParams['routeParams']['user']  = $resource->getUser();
+                return;
+            }
+
+            if (!is_array($resource)) {
+                return;
+            }
+
+            if (!isset($resource['user'])) {
+                return;
+            }
+
+            $eventParams['route'] = 'phpbnl13_status_api/user';
+            $eventParams['routeParams']['user']  = $resource['user'];
+        });
+
         if (!$user) {
             return;
         }
-
-        // Set a listener on the createLinks helper to ensure individual status links
-        // use the User route, and pass in the user to the route.
-        $helpers = $services->get('ViewHelperManager');
-        $links   = $helpers->get('HalLinks');
-        $links->getEventManager()->attach('createLink', function ($e) use ($user) {
-            $route  = $e->getParam('route');
-            $params = $e->getParam('params');
-
-            if ($route == 'phpbnl13_status_api/user') {
-                if ($user) {
-                    $params['user'] = $user;
-                }
-                return;
-            }
-
-            if ($route != 'phpbnl13_status_api/public') {
-                return;
-            }
-
-            $item   = $e->getParam('item', false);
-
-            if ($item instanceof Status) {
-                $e->setParam('route', 'phpbnl13_status_api/user');
-                $params['user']  = $item->getUser();
-                return;
-            }
-
-            if (!is_array($item)) {
-                return;
-            }
-
-            if (!isset($item['user'])) {
-                return;
-            }
-
-            $e->setParam('route', 'phpbnl13_status_api/user');
-            $params['user']  = $item['user'];
-        });
 
         // Set the user in the persistence listener
         $persistence = $services->get('Phpbnl13StatusApi\PersistenceListener');
@@ -159,6 +161,7 @@ class Module
             return;
         }
         $collection = $result->getPayload();
+
         if (!$collection->collection instanceof Paginator) {
             return;
         }
