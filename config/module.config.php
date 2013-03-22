@@ -53,6 +53,7 @@ return array(
                     'may_terminate' => true,
                     'child_routes' => array(
                         'status' => array(
+                            'type'    => 'Literal',
                             'options' => array(
                                 'route'    => '/status',
                                 'defaults' => array(
