@@ -18,6 +18,11 @@ details.
 You may request any given endpoint via the `OPTIONS` method to discover
 what available `HTTP` options are available.
 
+Each of collections and individual status resources have a "describedby" HAL 
+link. Visiting this link will provide a JSON template of the given resource,
+allowing you to understand the structure and the required arguments when 
+creating or updating a resource.
+
 /api/status/public
 ------------------
 
