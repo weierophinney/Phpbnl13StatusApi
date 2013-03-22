@@ -50,6 +50,17 @@ return array(
                             'template'   => 'phpbnl13_status_api/documentation',
                         ),
                     ),
+                    'may_terminate' => true,
+                    'child_routes' => array(
+                        'status' => array(
+                            'options' => array(
+                                'route'    => '/status',
+                                'defaults' => array(
+                                    'template'   => 'phpbnl13_status_api/documentation/status',
+                                ),
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),
@@ -77,6 +88,7 @@ return array(
     'view_manager' => array(
         'template_map' => array(
             'phpbnl13_status_api/documentation' => __DIR__ . '/../view/phpbnl13_status_api/documentation.phtml',
+            'phpbnl13_status_api/documentation/status' => __DIR__ . '/../view/phpbnl13_status_api/documentation/status.phtml',
         ),
     ),
 );

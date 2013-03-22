@@ -1,0 +1,13 @@
+<?php
+// JSON representation of status
+$status = array(
+    'id'         => '[auto] Identifier for status; should not be submitted for new statuses, but always returned in the representation',
+    'type'       => '[optional] One of "status", "image", or "link"; if not provided as part of a new status, "status" is assumed',
+    'text'       => '[optional/required] Text of the status; required for type "status"',
+    'user'       => '[auto] This is part of the URI, and thus does not have to be in the representation submitted; always returned in the representation',
+    'timestamp'  => '[auto] The timestamp when the status was created',
+    'image_url'  => '[optional/required] URL for the image; required for type "image"',
+    'link_url'   => '[optional/required] URL; required for type "link"',
+    'link_title' => '[optional/required] Title to use with link; required for type "link"',
+);
+echo json_encode($status);

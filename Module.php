@@ -129,7 +129,10 @@ class Module
     public function onDispatchDocs($e)
     {
         $route = $e->getRouteMatch()->getMatchedRouteName();
-        if ($route != 'phpbnl13_status_api/documentation') {
+        $base  = 'phpbnl13_status_api/documentation';
+        if (strlen($route) < strlen($base)
+            || 0 !== strpos($route, $base)
+        ) {
             return;
         }
 
@@ -137,7 +140,14 @@ class Module
         $model->setTerminal(true);
 
         $response = $e->getResponse();
-        $response->getHeaders()->addHeaderLine('content-type', 'text/x-markdown');
+        $headers  = $response->getHeaders();
+
+        if ($route == $base) {
+            $headers->addHeaderLine('content-type', 'text/x-markdown');
+            return;
+        }
+
+        $headers->addHeaderLine('content-type', 'application/json');
     }
 
     public function setDocumentationLink($e)
