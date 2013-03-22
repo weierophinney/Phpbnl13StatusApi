@@ -2,6 +2,8 @@
 
 namespace Phpbnl13StatusApi;
 
+use PhlyRestfully\HalResource;
+use PhlyRestfully\Link;
 use PhlyRestfully\View\RestfulJsonModel;
 use Zend\Paginator\Paginator;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
@@ -65,6 +67,14 @@ class Module
             array($this, 'setDocumentationLink'), 
             10
         );
+
+        // Add a "describedby" relation to resources
+        $sharedEvents->attach(
+            $controllers, 
+            array('get.post', 'create.post', 'patch.post', 'update.post'), 
+            array($this, 'setDescribedByRelation')
+        );
+
         // Add metadata to collections
         $sharedEvents->attach(
             $controllers,
@@ -180,5 +190,16 @@ class Module
             'page'     => $collection->page,
             'per_page' => $collection->pageSize,
         ));
+    }
+
+    public function setDescribedByRelation($e)
+    {
+        $resource = $e->getParam('resource');
+        if (!$resource instanceof HalResource) {
+            return;
+        }
+        $link = new Link('describedby');
+        $link->setRoute('phpbnl13_status_api/documentation/status');
+        $resource->getLinks()->add($link);
     }
 }
