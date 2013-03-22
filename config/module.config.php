@@ -52,6 +52,15 @@ return array(
                     ),
                     'may_terminate' => true,
                     'child_routes' => array(
+                        'collection' => array(
+                            'type'    => 'Literal',
+                            'options' => array(
+                                'route'    => '/collection',
+                                'defaults' => array(
+                                    'template'   => 'phpbnl13_status_api/documentation/collection',
+                                ),
+                            ),
+                        ),
                         'status' => array(
                             'type'    => 'Literal',
                             'options' => array(
@@ -89,6 +98,7 @@ return array(
     'view_manager' => array(
         'template_map' => array(
             'phpbnl13_status_api/documentation' => __DIR__ . '/../view/phpbnl13_status_api/documentation.phtml',
+            'phpbnl13_status_api/documentation/collection' => __DIR__ . '/../view/phpbnl13_status_api/documentation/collection.phtml',
             'phpbnl13_status_api/documentation/status' => __DIR__ . '/../view/phpbnl13_status_api/documentation/status.phtml',
         ),
     ),
