@@ -195,7 +195,11 @@ class Module
 
     public function setDescribedByRelation($e)
     {
-        $resource = $e->getParam('resource');
+        $resource = $e->getParam('resource', false);
+        if (!$resource) {
+            $resource = $e->getParam('collection', false);
+        }
+
         if (!$resource instanceof LinkCollectionAwareInterface) {
             return;
         }
