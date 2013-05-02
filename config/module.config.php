@@ -10,6 +10,23 @@ return array(
                 'Phpbnl13StatusApi\Status' => 'Hydrator\ClassMethods',
             ),
         ),
+        'resources' => array(
+            'Phpbnl13StatusApi\StatusResourcePublicController' => array(
+                'identifiers'             => array('Phpbnl13StatusApi\StatusResourceController'),
+                'listener'                => 'Phpbnl13StatusApi\PersistenceListener',
+                'page_size'               => 10,
+                'route_name'              => 'phpbnl13_status_api/public',
+                'collection_name'         => 'status',
+                'collection_http_options' => array('GET'),
+            ),
+            'Phpbnl13StatusApi\StatusResourceUserController' => array(
+                'identifiers'     => array('Phpbnl13StatusApi\StatusResourceController'),
+                'listener'        => 'Phpbnl13StatusApi\PersistenceListener',
+                'page_size'       => 10,
+                'route_name'      => 'phpbnl13_status_api/user',
+                'collection_name' => 'status',
+            ),
+        ),
     ),
     'router' => array('routes' => array(
         'phpbnl13_status_api' => array(
@@ -87,12 +104,6 @@ return array(
             'Phpbnl13StatusApi\DbTable' => 'Phpbnl13StatusApi\Service\DbTableFactory',
             'Phpbnl13StatusApi\StatusDbPersistence' => 'Phpbnl13StatusApi\Service\StatusDbPersistenceFactory',
             'Phpbnl13StatusApi\StatusResource' => 'Phpbnl13StatusApi\Service\StatusResourceFactory',
-        ),
-    ),
-    'controllers' => array(
-        'factories' => array(
-            'Phpbnl13StatusApi\StatusResourcePublicController' => 'Phpbnl13StatusApi\Service\StatusResourcePublicControllerFactory',
-            'Phpbnl13StatusApi\StatusResourceUserController' => 'Phpbnl13StatusApi\Service\StatusResourceUserControllerFactory',
         ),
     ),
     'view_manager' => array(
