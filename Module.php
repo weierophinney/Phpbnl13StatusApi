@@ -92,6 +92,7 @@ class Module
 
         // Set a listener on the renderCollection.resource event to ensure 
         // individual status links pass in the user to the route.
+        // @todo Is this necessary any more?
         $helpers = $services->get('ViewHelperManager');
         $links   = $helpers->get('HalLinks');
         $links->getEventManager()->attach('renderCollection.resource', function ($e) use ($user) {
@@ -124,17 +125,6 @@ class Module
             $eventParams['route'] = 'phpbnl13_status_api/user';
             $eventParams['routeParams']['user']  = $resource['user'];
         });
-
-        if (!$user) {
-            return;
-        }
-
-        // Set the user in the persistence listener
-        $persistence = $services->get('Phpbnl13StatusApi\PersistenceListener');
-        if (!$persistence instanceof StatusPersistenceInterface) {
-            return;
-        }
-        $persistence->setUser($user);
     }
 
     public function onDispatchDocs($e)

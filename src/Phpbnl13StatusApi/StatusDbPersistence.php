@@ -31,22 +31,13 @@ class StatusDbPersistence implements
     protected $table;
 
     /**
-     * User for whom to manipulate status; none removes ability to
-     * create/update/patch/delete, but will retrieve any status by id, or a
-     * list of all statuses from all users.
-     * @var string
-     */
-    protected $user;
-
-    /**
      * @var StatusValidator
      */
     protected $validator;
 
-    public function __construct(TableGateway $table, $user = null)
+    public function __construct(TableGateway $table)
     {
         $this->table = $table;
-        $this->user  = $user;
         $this->validator = new StatusValidator();
         $this->hydrator  = new ClassMethodsHydrator();
     }
@@ -70,18 +61,10 @@ class StatusDbPersistence implements
         }
     }
 
-    public function setUser($user)
-    {
-        if (empty($user)) {
-            $this->user = null;
-            return;
-        }
-        $this->user = (string) $user;
-    }
-
     public function onCreate($e)
     {
-        if (!$this->user) {
+        $user = $e->getRouteParam('user', false);
+        if (!$user) {
             throw new CreationException('User must be specified in order to create a status');
         }
         if (false === $data = $e->getParam('data', false)) {
@@ -91,7 +74,7 @@ class StatusDbPersistence implements
         $data = (array) $data;
 
         // Inject user into data
-        $data['user'] = $this->user;
+        $data['user'] = $user;
 
         $status = new Status();
         $status = $this->hydrator->hydrate($data, $status);
@@ -110,7 +93,8 @@ class StatusDbPersistence implements
 
     public function onUpdate($e)
     {
-        if (!$this->user) {
+        $user = $e->getRouteParam('user', false);
+        if (!$user) {
             throw new UpdateException('User must be specified in order to update a status');
         }
         if (false === $id = $e->getParam('id', false)) {
@@ -148,7 +132,8 @@ class StatusDbPersistence implements
 
     public function onPatch($e)
     {
-        if (!$this->user) {
+        $user = $e->getRouteParam('user', false);
+        if (!$user) {
             throw new PatchException('User must be specified in order to patch a status');
         }
 
@@ -192,7 +177,8 @@ class StatusDbPersistence implements
 
     public function onDelete($e)
     {
-        if (!$this->user) {
+        $user = $e->getRouteParam('user', false);
+        if (!$user) {
             return false;
         }
         if (false === $id = $e->getParam('id', false)) {
@@ -213,8 +199,9 @@ class StatusDbPersistence implements
         }
 
         $criteria = array('id' => $id);
-        if ($this->user) {
-            $criteria['user'] = $this->user;
+        $user     = $e->getRouteParam('user', false);
+        if ($user) {
+            $criteria['user'] = $user;
         }
 
         $rowset = $this->table->select($criteria);
@@ -227,6 +214,7 @@ class StatusDbPersistence implements
 
     public function onFetchAll($e)
     {
-        return $this->table->fetchAll($this->user);
+        $user = $e->getRouteParam('user', false);
+        return $this->table->fetchAll($user);
     }
 }
