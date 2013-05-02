@@ -98,11 +98,12 @@ class Module
             $eventParams = $e->getParams();
             $resource    = $eventParams['resource'];
 
-            if ($resource instanceof Status) {
-                $eventParams['route'] = 'phpbnl13_status_api/user';
-                $eventParams['routeParams']['user']  = $resource->getUser();
+            if (!$resource instanceof Status) {
                 return;
             }
+
+            $eventParams['route'] = 'phpbnl13_status_api/user';
+            $eventParams['routeParams']['user']  = $resource->getUser();
         });
     }
 
