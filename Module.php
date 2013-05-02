@@ -84,7 +84,6 @@ class Module
             -1
         );
 
-        // $sharedEvents->attach('Phpbnl13StatusApi\StatusResourcePublicController', 'getList.post', function ($e) {
         $sharedEvents->attach($controllers, 'getList.post', function ($e) {
             $collection = $e->getParam('collection');
             $collection->setResourceRoute('phpbnl13_status_api/user');
