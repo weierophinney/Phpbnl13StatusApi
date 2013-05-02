@@ -93,6 +93,7 @@ class Module
         // Set a listener on the renderCollection.resource event to ensure 
         // individual status links pass in the user to the route.
         // @todo Is this necessary any more?
+        /*
         $helpers = $services->get('ViewHelperManager');
         $links   = $helpers->get('HalLinks');
         $links->getEventManager()->attach('renderCollection.resource', function ($e) use ($user) {
@@ -125,6 +126,7 @@ class Module
             $eventParams['route'] = 'phpbnl13_status_api/user';
             $eventParams['routeParams']['user']  = $resource['user'];
         });
+         */
     }
 
     public function onDispatchDocs($e)
