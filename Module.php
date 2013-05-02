@@ -92,41 +92,18 @@ class Module
 
         // Set a listener on the renderCollection.resource event to ensure 
         // individual status links pass in the user to the route.
-        // @todo Is this necessary any more?
-        /*
         $helpers = $services->get('ViewHelperManager');
         $links   = $helpers->get('HalLinks');
         $links->getEventManager()->attach('renderCollection.resource', function ($e) use ($user) {
             $eventParams = $e->getParams();
-            $route       = $eventParams['route'];
-            $routeParams = $eventParams['routeParams'];
-
-            if ($route != 'phpbnl13_status_api/user'
-                && $route != 'phpbnl13_status_api/public'
-            ) {
-                return;
-            }
-
-            $resource = $eventParams['resource'];
+            $resource    = $eventParams['resource'];
 
             if ($resource instanceof Status) {
                 $eventParams['route'] = 'phpbnl13_status_api/user';
                 $eventParams['routeParams']['user']  = $resource->getUser();
                 return;
             }
-
-            if (!is_array($resource)) {
-                return;
-            }
-
-            if (!isset($resource['user'])) {
-                return;
-            }
-
-            $eventParams['route'] = 'phpbnl13_status_api/user';
-            $eventParams['routeParams']['user']  = $resource['user'];
         });
-         */
     }
 
     public function onDispatchDocs($e)
