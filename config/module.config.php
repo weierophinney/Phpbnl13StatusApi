@@ -12,7 +12,7 @@ return array(
         ),
         'resources' => array(
             'Phpbnl13StatusApi\StatusResourcePublicController' => array(
-                'identifiers'             => array('Phpbnl13StatusApi\StatusResourceController'),
+                'identifier'              => 'Phpbnl13StatusApi\StatusResourceController',
                 'listener'                => 'Phpbnl13StatusApi\PersistenceListener',
                 'page_size'               => 10,
                 'route_name'              => 'phpbnl13_status_api/public',
@@ -20,7 +20,7 @@ return array(
                 'collection_http_options' => array('GET'),
             ),
             'Phpbnl13StatusApi\StatusResourceUserController' => array(
-                'identifiers'     => array('Phpbnl13StatusApi\StatusResourceController'),
+                'identifier'      => 'Phpbnl13StatusApi\StatusResourceController',
                 'listener'        => 'Phpbnl13StatusApi\PersistenceListener',
                 'page_size'       => 10,
                 'route_name'      => 'phpbnl13_status_api/user',
