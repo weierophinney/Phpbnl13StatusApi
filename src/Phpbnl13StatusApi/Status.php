@@ -113,7 +113,7 @@ class Status implements StatusInterface
                 'Link title must be a non-empty string'
             );
         }
-        $this->title = $title;
+        $this->linkTitle = $title;
     }
 
 
